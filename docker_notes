@@ -14,7 +14,118 @@ Build the docker image
  4. docker build . -t mytestimage
  5. docker run -it -p 8080:80 -d <Image ID>
  6. docker exec -it <image id> bash
- 
+
+
+Working with docker images: [build,manage,
+-------------------------------------------------------------
+Commands:
+
+	Ø Pull docker image
+	docker pull ubuntu:latest
+	Ø push image to repository
+	docker push my-custom-nginx:1.0
+         
+	Ø see all images on your local system
+	docker images 
+
+        Ø search image
+	docker search ubuntu
+	
+	Ø Build images using a Dockerfile
+           FROM ubuntu:latest
+           RUN apt-get update && apt-get install -y nginx
+           CMD["nginx", "-g", "daemon off;"]
+
+           docker build -t my-custom-nginx:1.0 .
+	
+	Ø To tag an image
+	docker tag my-custom-ngixn:1.0 my-custom-nginx:newtag
+	
+	Ø Inspect an image
+	docker inspect ubuntu:latest
+
+        Ø history of an image
+	docker history my-custom-nginx:1.0
+	
+	Ø Sava an image to a tar file
+	docker save -o my_image.tar my-custom-nginx:1.0
+	
+	Ø To load an image
+        docker load -i my_image.tar
+	
+	Ø create image from modified container
+	docker commit <container-id> new-image-name:tag
+	
+	Ø to list images filtered by a tag
+	docker images --filter "dangling=true"
+	
+	Ø to export a container
+	docker export <container_id> container.tar
+	
+	Ø import a container from a tar file
+	cat container.tar | docker import - new-image-name:tag
+
+        Ø remove an image
+	docker rmi my-custom-nginx:1.0
+	
+	Ø Remove dangling images [dangling images are untagged images that are no longer
+	referenced they can take up space on your system]
+	docker image prune
+	
+	Ø Remove all unused images
+	docker image prune -a
+	
+	Ø Adding metadata to an image
+	FROM ubuntu:latest
+	LABEL maintainer="your-email@example.com"
+	
+	Ø Build image for a specific platform
+	docker build --platform linux/amd64 -t my-image:tag .
+	Ø Display the docker size
+           docker system df
+
+    >     Retrive detailed information about an Image
+            docker inspect --format '{{ .Architecture }}' my-image:tag
+
+Working with docker containers: [run, manage, accessing]
+---------------------------------------------
+
+> Run a container from an image
+   docker run ubuntu:latest
+
+> Run a container in detached mode
+   docker run -d nginx
+
+> run a container with specific name
+   docker run --name my-container alpine
+
+> run a container with specific environment variable
+   docker run -e VAR_NAME=value debian
+
+> list all running containers
+   docker ps
+
+> list all containers including stopped ones
+   docker ps -a
+
+> stop a container
+   docker stop <container_id>
+
+> start a container
+   docker start <container_id>
+
+> remove a container
+   docker rm <container_id>
+
+> remove all stopped containers
+   docker container prune
+
+> inspect a container
+   docker inspect container
+
+> view container logs
+    docker logs <container_id>
+
 
 *******************************************
 *       Docker cheat sheet(start)         *
