@@ -126,6 +126,50 @@ Working with docker containers: [run, manage, accessing]
 > view container logs
     docker logs <container_id>
 
+> Execute a command inside a container
+  docker exec <container-id> ls
+
+> access a shell inside a running container container
+  docker exec -it <container-id> /bin/bash
+
+> copy files from/to a container
+  docker cp container:/path/to/file /local/path
+
+> run a container with specific port mapping
+  docker run -p 8080:80 nginx
+
+> run a container with volume
+  docker run -v /local/path:/container/path nginx
+
+> run a container with CPU and memory limits
+  docker run --cpus="0.5" --memory="256m" nginx
+
+> create and then start container
+  docker create --name my-container alpine
+
+> start the created container
+  docker start my-container
+
+> pausing and unpausing containers
+  docker pause <container-id>
+  docker unpause <container-id>
+
+> view real time statistics for a container
+  docker stats <container_id>
+
+> update running containers
+  docker update --memory="512m" nginx
+
+> restart container
+  docker restart container
+
+> attach local input, output and error streams to a running container
+  docker attach <container-id>
+
+> see processes in running container
+  docker top <container-id>
+
+
 
 *******************************************
 *       Docker cheat sheet(start)         *
