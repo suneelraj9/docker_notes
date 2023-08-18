@@ -199,6 +199,57 @@ CMD ["nginx", "-g", "daemon off;"]
 > TO build an image withiut cache(to rebuild all layers)
   docker build --no-cache -t my-nginx-image:latest .
 
+********************
+Docker compose
+********************
+A Docker Compose file is a YAML file that describes the entire stack, including services, networks, and volumes.
+
+Example: docker-compose.yaml
+version: '3'
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+
+> start all services
+  docker-compose up
+
+> start all services in detached mode
+  docker compose up -d
+
+> stop all services
+  docker-compose down
+
+> build all services
+  docker-compose build
+
+> To scale a service to 3 instances
+  docker-compose up --scale web=3
+
+> To view logs
+  docker-compose logs
+
+> run a  one time command on a service
+  docker-compose run web /bin/bash
+
+> remove everything which includes volumes etc.,
+  docker-compose down -v
+
+*********************
+Networking in Docker
+*********************
+Bridge Networks - Bridge networks are the default network type in Docker, allowing isolated communication between containers on the same host.
+
+
+
 
 *******************************************
 *       Docker cheat sheet(start)         *
