@@ -169,6 +169,35 @@ Working with docker containers: [run, manage, accessing]
 > see processes in running container
   docker top <container-id>
 
+************************
+Docker file basics
+************************
+# Use an official image as a parent image
+FROM nginx:latest
+
+# Set the maintainer label
+LABEL maintainer="email@example.com"
+
+# Set environment variable
+ENV NGINX_PORT=80
+
+# Copy the static website files
+COPY ./web /usr/share/nginx/html
+
+# Make port 80 available to the world outside this container
+EXPOSE 80
+
+# Run nginx
+CMD ["nginx", "-g", "daemon off;"]
+
+> To build an image from a docker file
+   docker build -t my-image-nginx:lastest .
+
+> To build an image from a docker file and with a specific name and tag
+  docker build -t my-image-nginx:1.0 /path/to/dockerfile
+
+> TO build an image withiut cache(to rebuild all layers)
+  docker build --no-cache -t my-nginx-image:latest .
 
 
 *******************************************
