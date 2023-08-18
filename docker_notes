@@ -301,6 +301,64 @@ Custom networks provide greater control over the networking aspects, such as ena
 > filter network by name
   docker network ls --filter name=my-custom-network
 
+**********************************
+ Data Management in Docker
+**********************************
+> Make a new special folder
+  docker volume create my_volume
+
+> list volumes
+  docker volume ls
+
+> Attach a special folder to a container to keep files safe
+  docker volume -v my_volume:/data my_container
+
+> Remove a volume
+  docker volume rm my_volume
+
+> Inspect a volume
+  docker volume inspect my_volume
+
+Bind Mounts are like attaching an existing folder from your computer inside a container. 
+It's like making a shortcut from your computer's folder to the container, so anything you change in one place gets changed in the other.
+> Attach a folder from your computer to a container
+  docker run -v /path/on/your/computer:/path/in/container my_container
+
+> Make a folder inside a container that you can look at but not change
+  docker run -v /path/on/your/computer:/path/in/container:ro my_container
+
+> create a named volume with specific storage options
+  docker volume create --name my_special_volume --driver local --opt type=tmpfs --opt device=tmpfs
+
+>  To remove all unused volumes (those not associated with a container), you can use the prune command
+  docker volume prune
+
+*******************
+Docker Registries
+*******************
+> create private storage room:make a personal storage room
+  docker run -d -p 5000:5000 --name my-registry registry:2
+
+> put a blueprint in private storage room: Add a blueprint to a room
+  docker tag my_image localhost:5000/my_image
+  docker push localhost:5000/my_image
+
+> Take a Blueprint from Your Private Storage Room: Here's how you take a blueprint out of your room.
+  docker pull localhost:5000/my_image
+
+Managing secrets
+****************
+
+Scenario: You're running a web server that requires an SSL certificate for HTTPS.
+Without Secrets: Storing the private key as a regular file might expose it if there is a breach.
+With Docker Secrets:
+
+> Create a Secret: Store the private key securely.
+echo "my_private_key" | docker secret create tls_key -
+
+> Use the Secret in a Service: Your web server can use the key without it being exposed.
+docker service create --name my_web_server --secret tls_key my_image
+
 
 
 
