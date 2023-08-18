@@ -248,6 +248,59 @@ Networking in Docker
 *********************
 Bridge Networks - Bridge networks are the default network type in Docker, allowing isolated communication between containers on the same host.
 
+> create bridge network
+  docker network create --driver bridge my-bridge-network
+
+> connect a container to a bridge network
+  docker network connect my-bridge-network my-container
+
+> list all networks
+  docker network ls
+
+> create a container with host network
+  docker run --network host <my-image>
+
+Overlay Network: Enables communication between containers across different hosts, typically used in swarm mode
+> create overlay network
+  docker network create --driver overlay my-overlay-network
+
+Custom networks provide greater control over the networking aspects, such as enabling manual IP address assignment.
+> create custom network with specific subnet and gateway
+  openstack network create --subnet 192.169.1.0/24 --gateway 192.168.1.1 my-custom-network
+
+> create container with a specific IP in a custom network
+  docker run --network my-custom-network --ip 192.168.1.10 my-image
+
+> To disconnect a container from custom network
+  docker network disconnect my-custom-network my-container
+
+> To remove a network
+  docker network rm my-custom-network
+
+> To inspect a specific network
+  docker network inspect my-custom-network
+
+> To connect another container to an existing custom network
+  docker network connect my-custom-network my-container2
+
+> create a user defined bridge network 
+  docker network create --driver bridge --attachable --opt "com.docker.network.bridge.enable_ip_masquerade"="true" user_bridge_network
+
+> To create an encrypted overlay network
+  docker network create --driver overlay --opt encrypted my-encrypted-overlay-network
+
+> To run a container with specific port mapping 
+   docker run --network my-custom-network -p 4000:80 my_image
+
+> Run a container with network alias:
+  docker run --network my-custom-network --network-alias my_alias my-image
+
+> filters networks by type
+  docker network ls --filter driver=bridge
+
+> filter network by name
+  docker network ls --filter name=my-custom-network
+
 
 
 
