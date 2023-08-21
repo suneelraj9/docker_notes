@@ -359,6 +359,87 @@ echo "my_private_key" | docker secret create tls_key -
 > Use the Secret in a Service: Your web server can use the key without it being exposed.
 docker service create --name my_web_server --secret tls_key my_image
 
+Docker Swarm
+*************
+
+> Initialize the Swarm (Open the Bus Station): You open the central bus station to manage all bus routes
+  docker swarm init
+
+> Join Nodes to the Swarm (Add Buses to the Fleet): You purchase buses and add them to your fleet.
+  docker swarm join --token SWMTKN-1-xyz 192.168.99.100:2377
+
+b. Creating and Managing Clusters (Setting Up Bus Routes)
+   Clusters are like different bus routes, each serving different parts of the city.
+> Create a Service (Create a Bus Route): You set up a new bus route with specific stops.
+  docker service create --replicas 3 -p 80:80 --name bus_route nginx
+
+> List the servce(see all bus routes)
+  docker service ls
+
+> Scale a Service (Add More Buses to a Route): If a route is busy, you add more buses to it.
+  docker service scale bus_route=5
+
+> Remove a Service (Close a Bus Route): If a route is no longer needed, you shut it down.
+  docker service rm bus_route
+
+c. Services in Swarm (Managing Different Types of Buses)
+   Services are like different types of buses that might serve different purposes (e.g., city buses, school buses, airport shuttles).
+
+> Create a Network (Set Up Bus Stops): You set up bus stops for different types of buses.
+  docker network create -d overlay bus_stops
+
+> Update a Service (Change a Bus Route): If you need to modify a route, you can do so easily.
+  docker service update --image new_route bus_route
+
+> Inspect a Service (Inspect a Bus): You check a specific bus to ensure it's in good condition.
+  docker service inspect bus_route
+
+> Initialize swarm with some additional options
+  docker swarm init --advertise-addr <MANAGER-IP>
+
+> Join Node as a Worker (Add a Regular Bus to Fleet):
+  docker swarm join --token <TOKEN> <MANAGER-IP>:2377
+
+> Join Node as a Manager (Add a Supervisor Bus to Fleet):
+  docker swarm join-token manager
+  docker swarm join --token <MANAGER-TOKEN> <MANAGER-IP>:2377
+
+> Leave Swarm (Remove a Bus from Fleet):
+  docker swarm leave
+
+> List Nodes (See All Buses in Fleet):
+  docker node ls
+
+> Create a Service with Environment Variables (Create a Bus Route with Special Instructions):
+  docker service create --name bus_route --env MY_VAR=my_value nginx
+
+> Rolling Update of a Service (Update Bus Route Gradually):
+  docker service update --image new_image:tag --update-delay 10s --update-parallelism 1 bus_route
+
+> Filter Services (Find Specific Bus Routes):
+  docker service ls --filter name=bus_route
+
+> View Service Logs (See Logs from a Bus Route):
+  docker service logs bus_route
+
+> Create an Encrypted Overlay Network (Set Up Secure Bus Stops):
+  docker network create --driver overlay --opt encrypted bus_stops_secure
+
+> Connect a Service to a Network (Assign a Bus Route to Specific Stops):
+  docker service update --network-add bus_stops_secure bus_route
+
+> Disconnect a Service from a Network (Remove a Bus Route from Specific Stops):
+  docker service update --network-rm bus_stops_secure bus_route
+
+> Set Service Resiliency (Ensure Continuous Service on Bus Route):
+  docker service update --update-failure-action continue bus_route
+
+> Rollback to Previous Version (Revert to Previous Bus Route):
+  docker service update --rollback bus_route
+
+
+
+
 
 
 
