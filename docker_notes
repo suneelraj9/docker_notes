@@ -437,6 +437,78 @@ c. Services in Swarm (Managing Different Types of Buses)
 > Rollback to Previous Version (Revert to Previous Bus Route):
   docker service update --rollback bus_route
 
+> Two Approaches: (to scale services)
+    docker service scale service01=1
+    docker service update --replicas 1 service02
+
+> Scaling Multiple Services Together:
+  docker service scale service01=3 service02=3 
+
+> Global Service
+  docker service create --name antivirus --mode global -dt ubuntu
+  docker service ps antivirus
+
+> Replicated Service
+  docker service create --name myreplica --replicas 1 nginx 
+
+> Change the Node Availability to Drain for maintenance schedule
+  docker node update --availability drain swarm03
+
+> Verify Node status
+  docker node ls
+
+> Change the Node Availability To Active
+  docker node update --availability active swarm03 
+
+> Inspecting a Service
+  docker service inspect demotroubleshoot
+  docker service inspect demotroubleshoot --pretty
+
+> Inspecting a Node
+  docker node inspect swarm01 
+  docker node inspect swarm01 -pretty
+
+> Create a Service by Publishing port
+  docker service create --name mywebserver --replicas 1 --publish 8080:80 nginx
+
+  Verify Ports in Linux Server
+  netstat -ntlp
+  Verify IP address
+  ifconfig eth0
+  Curl Request to IP on port 8080
+  curl 142.93.214.57:8080
+
+> Docker stack:
+  docker-compose.yml
+
+    version: '3'
+    services:
+      webserver:
+        image: nginx
+        ports:
+           - "8080:80"
+      database:
+        image: redis
+
+> Deploy Stack:
+  docker stack deploy --compose-file docker-compose.yml mydemo
+
+> Remove Stack
+  docker stack rm mydemo 
+
+> Setting up Autolock
+
+    docker swarm update --autolock=true
+    systemctl restart docker
+    docker node ls
+    docker swarm unlock
+
+> To Retrieve Key after swam is unlocked
+  docker swarm unlock-key
+
+> To rotate the key:
+  docker swarm unlock-key --rotate 
+
 
 
 
